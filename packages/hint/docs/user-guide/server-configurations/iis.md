@@ -20,7 +20,10 @@ There are some assumptions though:
 Each section has a comment with a small explanation and the related hint:
 
 ```xml
- <!-- Explanation ("hint name") -->
+ <!--
+    Explanation
+    "hint name": URL
+-->
 ```
 
 If you want to know more, it is recommended to visit the documentation of each
@@ -32,7 +35,10 @@ related hint.
     <system.webServer>
         <httpProtocol>
             <customHeaders>
-                <!-- Remove unnecesary headers ("no-disallowed-headers") -->
+                <!--
+                    Remove unnecesary headers
+                    "no-disallowed-headers": https://webhint.io/docs/user-guide/hints/hint-no-disallowed-headers
+                -->
                 <remove name="Public-Key-Pins"/>
                 <remove name="Public-Key-Pins-Report-Only"/>
                 <remove name="X-Powered-By"/>
@@ -42,7 +48,10 @@ related hint.
                 <add name="Strict-Transport-Security" value="max-age=31536000"/>
             </customHeaders>
         </httpProtocol>
-        <!-- This removes the "Server" header on IIS 10 and later: "no-disallowed-headers" -->
+        <!--
+            This removes the "Server" header on IIS 10 and later
+            "no-disallowed-headers": https://webhint.io/docs/user-guide/hints/hint-no-disallowed-headers
+        -->
         <security>
             <requestFiltering removeServerHeader ="true" />
         </security>
@@ -63,7 +72,7 @@ related hint.
                 on the file's path.
                 See https://docs.microsoft.com/en-us/iis/configuration/system.webserver/staticcontent/clientcache
                 for more info
-                ("content-type")
+                "content-type": https://webhint.io/docs/user-guide/hints/hint-content-type
             -->
             <clientCache cacheControlMode="DisableCache" />
             <!-- The brotli mime type is unknown to IIS, we need it or otherwise files will not be served correctly -->
@@ -98,7 +107,8 @@ related hint.
                 <!--
                     * pre-compressed files will be suffixed with br or gz
                     * map of correct mime types to be restored
-                    ("http-compression")
+
+                    "http-compression": https://webhint.io/docs/user-guide/hints/hint-http-compression
                 -->
                 <rewriteMap name="CompressedExtensions" defaultValue="">
                     <add key="css.gz" value="text/css; charset=utf-8" />
@@ -141,25 +151,37 @@ related hint.
                     <action type="Rewrite" value="nosniff"/>
                 </rule>
 
-                <!-- Add vary header ("http-compression") -->
+                <!--
+                    Add vary header
+                    "http-compression": https://webhint.io/docs/user-guide/hints/hint-http-compression
+                -->
                 <rule name="AddVaryAcceptEncoding" preCondition="PreCompressedFile" enabled="true">
                     <match serverVariable="RESPONSE_Vary" pattern=".*" />
                     <action type="Rewrite" value="Accept-Encoding" />
                 </rule>
 
-                <!-- Indicate response is encoded with brotli ("http-compression") -->
+                <!--
+                    Indicate response is encoded with brotli
+                    "http-compression": https://webhint.io/docs/user-guide/hints/hint-http-compression
+                -->
                 <rule name="AddEncodingBrotli" preCondition="PreCompressedBrotli" enabled="true" stopProcessing="true">
                     <match serverVariable="RESPONSE_Content_Encoding" pattern=".*" />
                     <action type="Rewrite" value="br" />
                 </rule>
 
-                <!-- Indicate response is encoded with gzip ("http-compression") -->
+                <!--
+                    Indicate response is encoded with gzip
+                    "http-compression": https://webhint.io/docs/user-guide/hints/hint-http-compression
+                -->
                 <rule name="AddEncodingZopfli" preCondition="PreCompressedZopfli" enabled="true" stopProcessing="true">
                     <match serverVariable="RESPONSE_Content_Encoding" pattern=".*" />
                     <action type="Rewrite" value="gzip" />
                 </rule>
 
-                <!-- The preconditions to know if a file is compressed and using what algorithm ("http-compression") -->
+                <!--
+                    The preconditions to know if a file is compressed and using what algorithm
+                    "http-compression": https://webhint.io/docs/user-guide/hints/hint-http-compression
+                -->
                 <preConditions>
                     <preCondition name="PreCompressedFile">
                         <add input="{HTTP_URL}" pattern="\.((?:css|html|ico|js|map|svg|txt|xml|webmanifest)\.(gz|br))" />
@@ -174,7 +196,10 @@ related hint.
             </outboundRules>
             <rules>
 
-                <!-- Redirect to HTTPS ("https-only") -->
+                <!--
+                    Redirect to HTTPS
+                    "https-only": https://webhint.io/docs/user-guide/hints/hint-https-only
+                -->
                 <rule name="HTTPSRedirect" stopProcessing="true">
                     <match url="(.*)"/>
                     <conditions>
@@ -196,7 +221,7 @@ related hint.
                        `rewriteMap`, rewrite the `content-type` header
                     4. Based on the extension (`.gz` or `.br`), rewrite the `content-encoding` header
 
-                    ("http-compression")
+                    "http-compression": https://webhint.io/docs/user-guide/hints/hint-http-compression
                 -->
                 <rule name="ServePrecompressedBrotli" stopProcessing="true">
                     <match url="^(.*/)?(.*?)\.(css|html|ico|js|map|svg|txt|xml|webmanifest)([?#].*)?$" ignoreCase="true"/>
@@ -244,6 +269,7 @@ related hint.
     <!--
          All the static assets should be under `dist/static`, set a long cache and the `immutable` directive, overriding
          the `no-cache` set up earlier.
+         "http-cache": https://webhint.io/docs/user-guide/hints/hint-http-cache
     -->
     <location path="dist/static">
         <system.webServer>

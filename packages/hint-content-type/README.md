@@ -379,6 +379,8 @@ Note that:
 * The above snippet works with IIS 7+.
 * You should use the above snippet in the `web.config` of your
   application.
+* For the the complete set of IIS configurations, not just for this rule,
+  see [IIS server configuration][IIS config]
 
 </details>
 
@@ -457,6 +459,7 @@ And then activate it via the [`.hintrc`][hintrc] configuration file:
 [required media type]: https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache#Referencing_a_cache_manifest_file
 [server configs]: https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Configuring_server_MIME_types
 [hintrc]: https://webhint.io/docs/user-guide/further-configuration/hintrc-formats/
+[IIS config]: https://webhint.io/docs/user-guide/server-configurations/iis/
 
 <!-- Apache links -->
 
